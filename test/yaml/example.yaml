@@ -68,6 +68,9 @@ features:
       features:  # as shared-attributes is present, features should be list.
       - name: morph_volume
         ibsi-id: RNU0
+        transformation: # only needs to be specified if not handled by the model itself
+          name: yeo_johnson
+          lambda: 0.0  # logarithmic transformation
       - name: stat_max
         ibsi-id: 84IY
         standardisation:  # indicates standardisation after extraction : x' = (x - shift) / (scale); only needs to be specified if not handled by the model itself
@@ -79,9 +82,6 @@ features:
           name: fixed_bin_size
           ibsi-id: Q3RU
           bin-size: 12
-        transformation:  # only needs to be specified if not handled by the model itself
-          name: yeo_johnson
-          lambda: 0.0  # logarithmic transformation
       - name: cm_joint_max
         ibsi-id: GYBY
         discretisation:
