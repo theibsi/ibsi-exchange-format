@@ -3,14 +3,14 @@
 
 # Automated tests are run at 6:30 UTC on the first and fifteenth day of each month.
 
-# name: build-check
+name: build-check
 
-# on:
-  # workflow_dispatch:
-  # schedule:
-    # - cron: '30 6 1,15 * *'
+on:
+ workflow_dispatch:
+ schedule:
+   - cron: '30 6 1,15 * *'
 
-# jobs:
+jobs:
   # build:
 
     # runs-on: ${{ matrix.os }}
