@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ibsi.format"
+version = "0.0.0.1"
+description = "A package for checking the IBSI exchange format."
+authors = [
+    {name = "Alex Zwanenburg", email = "alex.zwanenburg@outlook.com"}
+]
+license = "EUPL-1.2"
+license-files = ["LICENSE.txt"]
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Topic :: Scientific/Engineering :: Medical Science Apps."
+]
+requires-python = ">=3.11"
+dependencies = [
+	"strictyaml"
+]
+
+[project.urls]
+Repository = "https://github.com/theibsi/ibsi-exchange-format"
+Documentation = "https://github.com/theibsi/ibsi-exchange-format/blob/master/NEWS.md"
+Changelog = "https://github.com/theibsi/ibsi-exchange-format/blob/master/NEWS.md"
+
+[project.optional-dependencies]
+test = ["pytest>=7.4.0"]
+# docs = ["sphinx>=5.0.0", "sphinx_rtd_theme>=2.0.0", "nbsphinx"]
+
+[tool.pytest.ini_options]
+addopts = ["--strict-markers"]
+markers = [
+    "ci: marks tests for continuous integration"
+]
+#filterwarnings = [
+#   "error:invalid value encountered in scalar divid"
+#]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ibsi.format*"]
+exclude = ["docs*"]
+
+# [tool.setuptools.package-data]
+# mirp = ["config_settings.xml", "config_data.xml"]

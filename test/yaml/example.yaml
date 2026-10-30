@@ -1,0 +1,141 @@
+population:
+  diagnosis:
+    disease: non-small cell lung cancer
+    ajcc-stage: [III, IV]
+  age: [40, 95]
+  gender: any
+  smoking: any
+  treatment:
+    radiotherapy:
+      technique: [3D-CRT, IMRT]
+      fractionation: 30x 2 Gy daily
+    surgery: none
+    chemotherapy: cisplatin
+      timepoint: concurrent
+  endpoint: overall survival
+
+imaging:
+  - name: planning-ct
+    modality: CT
+    timepoint: RT planning  # the purpose for obtaining CT
+    contrast-agent: none
+    tube-voltage: [120, 140]  # Range of tube-voltages
+    kernel: lung
+    slice-thickness: [1.0, 3.0]  # Range of slice thicknesses
+    
+mask:
+  - name: GTV-1  # name in RTSTRUCT
+    mask-uid: gtv  # how the mask is identified in this document using reference-mask-uid
+    name-meaning: gross tumour volume  # -meaning indicates free-text for human readers
+    reference-image-uid: planning-ct  # mask was drawn on planning ct
+    method:
+      autosegmentation: yes
+      code: https://github.com/primakov/DuneAI-Automated-detection-and-segmentation-of-non-small-cell-lung-cancer-computed-tomography-images
+  
+image-processing:
+  - name: ct-workflow
+    processing:
+      name: volumetric
+      ibsi-id: 0ODV
+    image-resampling:
+      algorithm: cubic-spline  # currently no IBSI identifier - this will need to change in the future.
+      spacing: [1.2, 1.2, 1.2]
+    mask-resampling:
+      algorithm: linear
+  
+image-filters:
+  - name: laplacian_of_gaussian
+    ibsi-id: L6PA
+    parameters:
+    - name: sigma
+      ibsi-id: 41LN
+      value: 2.0
+    - name: filter-truncate
+      ibsi-id: WGPM
+      value: 4.0
+    - name: boundary-condition
+      ibsi-id: GBYQ
+      value:
+        name: mirror
+        ibsi-id: ZDTV
+
+features:
+  - featureset-1:  # This name is arbitrary
+    shared-attributes:  # shared-attributes are shared with all features within featureset-1
+      reference-image-uid: planning-CT  # because a image-uid is not specified above, the name attribute is used instead.
+      reference-mask-uid: gtv
+      reference-image-processing-uid: ct-workflow
+    features:  # as shared-attributes is present, features should be list.
+    - name: morph_volume
+      ibsi-id: RNU0
+    - name: stat_max
+      ibsi-id: 84IY
+      standardisation:  # indicates standardisation after extraction : x' = (x - shift) / (scale); only needs to be specified if not handled by the model itself
+        shift: 55.2
+        scale: 105.3
+    - name: ih_p10
+      ibsi-id: GPMT
+      discretisation:
+        name: fixed_bin_size
+        ibsi-id: Q3RU
+        bin-size: 12
+      transformation:  # only needs to be specified if not handled by the model itself
+        name: yeo_johnson
+        lambda: 0.0  # logarithmic transformation
+    - name: cm_joint_max
+      ibsi-id: GYBY
+      discretisation:
+        name: fixed_bin_number
+        ibsi-id: K15C
+        bin-number: 32
+      distance:
+        value: 1.0
+        metric:
+          name: chebyshev
+          ibsi-id: PVMT
+      merging:
+        name: 3d_average
+        ibsi-id: ITBB
+      
+  - featureset-2:  # This name is arbitrary
+    - name: stat_max
+      feature-uid: stat_max_laplacian_gaussian  # Since the same feature (by name) appears in featureset-1, either the name should be made unique, or a unique feature-uid should be specified.
+      ibsi-id: 84IY
+      reference-image-uid: planning_CT
+      reference-mask-uid: gtv
+      reference-image-processing-uid: ct-workflow
+      reference-image-filter-uid: laplacian_of_gaussian  # in absence of a declared image-filter-uid, the name attribute is used as the image-filter-uid
+    
+  - clinical-features: # This name is arbitrary
+    - name: age
+      discretisation:  # Only required if not handled internally by the model.
+        threshold: 55
+        values: [0, 1]
+        labels: [< 55, ≥ 55]
+    - name: tumour_stage
+      values: [0, 1]
+      labels: [III, IV]
+        
+models:
+  shared-attributes:
+    outcome:
+      name: overall_survival
+      type: survival
+      values: [0, 1]
+      labels: [censored, dead]
+    library: 
+      - name: scikit-learn
+        version: 1.9.1
+      - name: scikit-survival
+        version: 0.28
+  models:
+    - name: radiomics-model
+      name-meaning: model containing only radiomics features
+      type: decision tree  # additional information regarding the model architecture
+      code: link_to_some_repository
+      reference-feature-uid: [morph_volume, stat_max, ih_p10, cm_joint_max, stat_max_laplacian_gaussian]  # refers to features by name or feature-uid
+    - name: clinical-model
+      name-meaning: model containing clinical features
+      type: cox proportional hazards
+      code: link_to_some_repository
+      reference-feature-uid: [morph_volume, age, tumour_stage]
