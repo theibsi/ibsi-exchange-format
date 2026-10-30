@@ -47,14 +47,13 @@ image-processing:
 image-filters:
   - name: laplacian_of_gaussian
     ibsi-id: L6PA
-    parameters:
-    - name: sigma
+    sigma:
       ibsi-id: 41LN
       value: 2.0
-    - name: filter-truncate
+    filter-truncate:
       ibsi-id: WGPM
       value: 4.0
-    - name: boundary-condition
+    boundary-condition:
       ibsi-id: GBYQ
       value:
         name: mirror
