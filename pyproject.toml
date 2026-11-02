@@ -3,7 +3,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ibsi.format"
+name = "ibsiformat"
 version = "0.0.0.1"
 description = "A package for checking the IBSI exchange format."
 authors = [
@@ -47,7 +47,7 @@ markers = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["ibsi.format*"]
+include = ["ibsiformat*"]
 exclude = ["docs*"]
 
 # [tool.setuptools.package-data]

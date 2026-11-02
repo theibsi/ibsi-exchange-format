@@ -21,5 +21,6 @@ def check(path: Path | str):
 def build_json_lookup_table():
     # Build json look-up table to facilitate building validators or templator.
     from importlib.resources import files
+    import ibsiformat
 
-    #json_files = files(ibsi.format._json_data)
+    json_files = files(ibsiformat.json_data)
