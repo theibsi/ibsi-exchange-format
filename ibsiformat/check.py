@@ -6,6 +6,7 @@ def check(path: Path | str):
     x = read_yaml_file(path = path)
 
     # Build a json lookup table to be able to identify relevant json files.
+    data, lut = build_json_lookup_table()
 
 def read_yaml_file(path: Path | str) -> dict:
     import strictyaml
@@ -30,5 +31,10 @@ def build_json_lookup_table():
     # Build json look-up table to facilitate building validators or templator.
     from importlib.resources import files
     import ibsiformat
+    import json
 
-    json_files = files(ibsiformat.json_data)
+    json_files = files(ibsiformat).joinpath("json_data")
+    json_list = []
+    for json_file in json_files:
+        json_list += json.loads(json_file.read_text(encoding="utf-8"))
+    pass
