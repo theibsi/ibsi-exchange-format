@@ -1,0 +1,7 @@
+{
+  "name": "ibsi-id",
+  "required": "required",
+  "value-type": "str",
+  "value-multiplicity": 1,
+  "value-check": "match-default"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "reference-image-filter-uid",
+  "required": "optional",
+  "value-type": "str",
+  "value-multiplicity": 1,
+  "value-check": {
+    "match-any-uid": "image-filter-uid"
+  }
+}

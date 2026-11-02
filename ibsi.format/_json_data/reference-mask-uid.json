@@ -1,0 +1,9 @@
+{
+  "name": "reference-mask-uid",
+  "required": "recommended",
+  "value-type": "str",
+  "value-multiplicity": 1,
+  "value-check": {
+    "match-any-uid": "mask-uid"
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "name": "image-feature",
+  "attributes": ["reference-image-uid", "reference-mask-uid", "reference-image-processing-uid", "reference-image-filter-uid"]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "reference-image-uid",
+  "required": "required",
+  "value-type": "str",
+  "value-multiplicity": 1,
+  "value-check": {
+    "match-any-uid": "image-uid"
+  }
+}
