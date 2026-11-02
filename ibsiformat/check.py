@@ -11,9 +11,9 @@ def read_yaml_file(path: Path | str) -> dict:
     import strictyaml
 
     # Attempt to read yaml file.
-    if path is str:
+    if isinstance(path, str):
         path = Path(path)
-    elif path is not Path:
+    elif not isinstance(path, Path):
         raise TypeError(f"Path must be a Path object, but is {type(path)}.")
     if not path.is_file():
         raise FileNotFoundError(f"File {path} does not exist.")
