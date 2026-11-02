@@ -17,3 +17,9 @@ def check(path: Path | str):
     with open(path, "r", encoding="utf-8") as f:
         x = strictyaml.dirty_load(f.read(), allow_flow_style=True)
 
+
+def build_json_lookup_table():
+    # Build json look-up table to facilitate building validators or templator.
+    from importlib.resources import files
+
+    #json_files = files(ibsi.format._json_data)
