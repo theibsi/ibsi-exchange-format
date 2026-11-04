@@ -1,13 +1,55 @@
+import copy
+from copy import deepcopy
 from functools import lru_cache
 from pathlib import Path
 
 
 def check(path: Path | str):
     # Read file.
-    x = read_yaml_file(path = path)
+    x = read_yaml_file(path=path)
 
     # Build a json lookup table to be able to identify relevant json files.
     lut = build_json_lookup_table()
+
+    if "imaging" in x:
+        ...
+
+    if "features" in x:
+        y = flatten_features(x)
+    pass
+
+
+def flatten_features(x):
+
+    def merge_shared_attributes(feature, shared_attributes):
+        return {**shared_attributes, **feature}
+
+    def process_featureset(featureset, shared_attributes):
+        for feature in featureset:
+            if isinstance(feature, dict):
+                if 'features' in feature:
+                    features = feature['features']
+                    for sub_feature in features:
+                        sub_feature = merge_shared_attributes(sub_feature, shared_attributes)
+                        flattened_features.append(sub_feature)
+                else:
+                    feature = merge_shared_attributes(feature, shared_attributes)
+                    flattened_features.append(feature)
+            else:
+                flattened_features.append(feature)
+
+    y = copy.deepcopy(x)
+
+    for key, value in x.items():
+        if key != "features":
+            continue
+
+        if isinstance(value, list):
+            for entry in value:
+                ...
+
+    return y
+
 
 
 def read_yaml_file(path: Path | str) -> dict:
@@ -25,9 +67,10 @@ def read_yaml_file(path: Path | str) -> dict:
 
     # Read YAML file. Note that we do not enforce a scheme at this point.
     with open(path, "r", encoding="utf-8") as f:
-        x = strictyaml.dirty_load(f.read(), allow_flow_style=True)
+        x = strictyaml.dirty_load(f.read(), allow_flow_style=True).data
 
     return x
+
 
 
 class LookupTable:

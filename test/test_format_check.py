@@ -8,3 +8,9 @@ def test_format_check():
     from ibsiformat.check import check
 
     check(path=Path(os.path.join(CURRENT_DIR, "yaml", "example.yaml")))
+
+
+def test_format_check_simple():
+    from ibsiformat.check import check
+
+    check(path=Path(os.path.join(CURRENT_DIR, "yaml", "example_simple.yaml")))
