@@ -1,0 +1,10 @@
+{
+    "name": "stat-min",
+    "required": "optional",
+    "attributes": {
+        "ibsi-id": "1GSF"
+    },
+    "inherits-from": "image-feature",
+    "value-type": "float",
+    "value-multiplicity": 1
+}

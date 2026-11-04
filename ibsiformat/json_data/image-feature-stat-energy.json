@@ -1,0 +1,10 @@
+{
+    "name": "stat-energy",
+    "required": "optional",
+    "attributes": {
+        "ibsi-id": "N8CA"
+    },
+    "inherits-from": "image-feature",
+    "value-type": "float",
+    "value-multiplicity": 1
+}

@@ -1,0 +1,10 @@
+{
+    "name": "stat-max",
+    "required": "optional",
+    "attributes": {
+        "ibsi-id": "84IY"
+    },
+    "inherits-from": "image-feature",
+    "value-type": "float",
+    "value-multiplicity": 1
+}

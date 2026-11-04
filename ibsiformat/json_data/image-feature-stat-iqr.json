@@ -1,0 +1,10 @@
+{
+    "name": "stat-iqr",
+    "required": "optional",
+    "attributes": {
+        "ibsi-id": "SALO"
+    },
+    "inherits-from": "image-feature",
+    "value-type": "float",
+    "value-multiplicity": 1
+}

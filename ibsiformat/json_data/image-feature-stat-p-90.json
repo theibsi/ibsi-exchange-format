@@ -1,0 +1,10 @@
+{
+    "name": "stat-p-90",
+    "required": "optional",
+    "attributes": {
+        "ibsi-id": "8DWT"
+    },
+    "inherits-from": "image-feature",
+    "value-type": "float",
+    "value-multiplicity": 1
+}

@@ -1,0 +1,10 @@
+{
+    "name": "stat-mean",
+    "required": "optional",
+    "attributes": {
+        "ibsi-id": "Q4LE"
+    },
+    "inherits-from": "image-feature",
+    "value-type": "float",
+    "value-multiplicity": 1
+}

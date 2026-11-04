@@ -1,0 +1,10 @@
+{
+    "name": "stat-quartile-coef-dispersion",
+    "required": "optional",
+    "attributes": {
+        "ibsi-id": "9S40"
+    },
+    "inherits-from": "image-feature",
+    "value-type": "float",
+    "value-multiplicity": 1
+}

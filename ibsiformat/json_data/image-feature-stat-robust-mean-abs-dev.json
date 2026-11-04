@@ -1,0 +1,10 @@
+{
+    "name": "stat-robust-mean-abs-dev",
+    "required": "optional",
+    "attributes": {
+        "ibsi-id": "1128"
+    },
+    "inherits-from": "image-feature",
+    "value-type": "float",
+    "value-multiplicity": 1
+}

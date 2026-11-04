@@ -1,0 +1,10 @@
+{
+    "name": "stat-median",
+    "required": "optional",
+    "attributes": {
+        "ibsi-id": "Y12H"
+    },
+    "inherits-from": "image-feature",
+    "value-type": "float",
+    "value-multiplicity": 1
+}
