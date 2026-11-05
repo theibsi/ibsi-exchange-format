@@ -40,13 +40,51 @@ def flatten_features(x):
 
     y = copy.deepcopy(x)
 
+    feature_list = []
     for key, value in x.items():
         if key != "features":
             continue
 
         if isinstance(value, list):
+            # List of features or list of feature sets.
             for entry in value:
-                ...
+                if not isinstance(entry, dict):
+                    raise TypeError("dict is expected.")
+
+                for key_2, value_2 in entry.items():
+                    if isinstance(value_2, list):
+                        # List of features
+                        feature_list.append(value_2)
+                    else:
+                        if not "features" in value_2:
+                            raise ValueError("A feature set should have 'features' key or be a list of feature.")
+                        features = value_2["features"]
+                        feature_list.append(features)
+
+                        # TODO: Add shared attributes to features.
+                        if "shared-attributes" in value_2:
+                            pass
+
+        elif isinstance(value, dict):
+            # Single feature or single feature set.
+            entry = value
+
+            for key_2, value_2 in entry.items():
+                if isinstance(value_2, list):
+                    # List of features
+                    feature_list.append(value_2)
+                else:
+                    if not "features" in value_2:
+                        raise ValueError("A feature set should have 'features' key or be a list of feature.")
+                    features = value_2["features"]
+                    feature_list.append(features)
+
+                    # TODO: Add shared attributes to features.
+                    if "shared-attributes" in value_2:
+                        pass
+
+        else:
+            raise TypeError("dict (feature or feature set) or list (features or feature sets) is expected.")
 
     return y
 
