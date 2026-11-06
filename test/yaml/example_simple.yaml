@@ -2,5 +2,5 @@ imaging:
   - name: test-ct
 
 features:
-  - name: stat-max
-    ibsi-id: 84IY
+  name: stat-max
+  ibsi-id: 84IY

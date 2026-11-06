@@ -1,114 +1,18 @@
-import copy
-from copy import deepcopy
-from functools import lru_cache
 from pathlib import Path
 
 
 def check(path: Path | str):
+    from ibsiformat.read import read_yaml_file
+    from ibsiformat.utilities import flatten_yaml_dict
+
     # Read file.
     x = read_yaml_file(path=path)
+    x = flatten_yaml_dict(x)
 
     # Build a json lookup table to be able to identify relevant json files.
     lut = build_json_lookup_table()
 
-    if "imaging" in x:
-        ...
-
-    if "features" in x:
-        y = flatten_features(x)
     pass
-
-
-def flatten_features(x):
-
-    def merge_shared_attributes(feature, shared_attributes):
-        return {**shared_attributes, **feature}
-
-    def process_featureset(featureset, shared_attributes):
-        for feature in featureset:
-            if isinstance(feature, dict):
-                if 'features' in feature:
-                    features = feature['features']
-                    for sub_feature in features:
-                        sub_feature = merge_shared_attributes(sub_feature, shared_attributes)
-                        flattened_features.append(sub_feature)
-                else:
-                    feature = merge_shared_attributes(feature, shared_attributes)
-                    flattened_features.append(feature)
-            else:
-                flattened_features.append(feature)
-
-    y = copy.deepcopy(x)
-
-    feature_list = []
-    for key, value in x.items():
-        if key != "features":
-            continue
-
-        if isinstance(value, list):
-            # List of features or list of feature sets.
-            for entry in value:
-                if not isinstance(entry, dict):
-                    raise TypeError("dict is expected.")
-
-                for key_2, value_2 in entry.items():
-                    if isinstance(value_2, list):
-                        # List of features
-                        feature_list.append(value_2)
-                    else:
-                        if not "features" in value_2:
-                            raise ValueError("A feature set should have 'features' key or be a list of feature.")
-                        features = value_2["features"]
-                        feature_list.append(features)
-
-                        # TODO: Add shared attributes to features.
-                        if "shared-attributes" in value_2:
-                            pass
-
-        elif isinstance(value, dict):
-            # Single feature or single feature set.
-            entry = value
-
-            for key_2, value_2 in entry.items():
-                if isinstance(value_2, list):
-                    # List of features
-                    feature_list.append(value_2)
-                else:
-                    if not "features" in value_2:
-                        raise ValueError("A feature set should have 'features' key or be a list of feature.")
-                    features = value_2["features"]
-                    feature_list.append(features)
-
-                    # TODO: Add shared attributes to features.
-                    if "shared-attributes" in value_2:
-                        pass
-
-        else:
-            raise TypeError("dict (feature or feature set) or list (features or feature sets) is expected.")
-
-    return y
-
-
-
-def read_yaml_file(path: Path | str) -> dict:
-    import strictyaml
-
-    # Attempt to read yaml file.
-    if isinstance(path, str):
-        path = Path(path)
-    elif not isinstance(path, Path):
-        raise TypeError(f"Path must be a Path object, but is {type(path)}.")
-    if not path.is_file():
-        raise FileNotFoundError(f"File {path} does not exist.")
-    if path.suffix not in [".yml", ".yaml"]:
-        raise FileNotFoundError(f"File {path} is not a YAML file.")
-
-    # Read YAML file. Note that we do not enforce a scheme at this point.
-    with open(path, "r", encoding="utf-8") as f:
-        x = strictyaml.dirty_load(f.read(), allow_flow_style=True).data
-
-    return x
-
 
 
 class LookupTable:
